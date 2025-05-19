@@ -1,0 +1,13 @@
+---
+- template:
+   src: templates/index.j2
+   dest: /var/www/html/index.html
+
+- firewalld:
+   service: http
+   permanent: yes
+   state: enabled 
+
+- service:
+   name: firewalld
+   state: reloaded 

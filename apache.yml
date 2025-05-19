@@ -1,0 +1,35 @@
+---
+- name: apache web server configuration on playbook
+  hosts: all 
+  become: true 
+  tasks:
+    - name: installing apache web server
+      yum:
+        name: httpd
+        state: latest 
+
+    - name: starting and enabling apache httpd service 
+      service:
+        name: httpd
+        state: started 
+        enabled: true
+
+    - name: setting up the apache web server 
+      template:
+        src: /home/amanclasses/index.j2
+        dest: /var/www/html/index.html
+
+    - name: restart
+      service:
+        name: httpd
+        state: restarted
+    - name: allwo http traffic 
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+    - name: reload the firewall services 
+      service:
+        name: firewalld
+        state: reloaded 
+
